@@ -1,10 +1,24 @@
 package routers
+
 import (
+	"sync"
 
 	"github.com/gin-gonic/gin"
 )
-type Router struct {
-	gin.RouterGroup
+
+type Router_T interface {
+	NewRouter() (Router)
+	Start(wg *sync.WaitGroup, port int) ()
 }
 
-func (Router) Get()
+
+type Router struct {
+	gin.Engine
+}
+
+func NewRouter() Router {
+	dr := gin.Default()
+	dr.SetTrustedProxies([]string{"192.168.0.0/16"})
+	return Router{*dr}
+}
+
