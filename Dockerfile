@@ -1,5 +1,4 @@
 # syntax=docker/dockerfile:1
-LABEL org.opencontainers.image.source https://github.com/clarkbains/waypoint-proxy
 FROM golang:1.16-alpine AS build
 WORKDIR /app
 COPY go.mod ./
@@ -20,3 +19,4 @@ COPY root.pem ./
 COPY --from=build /wp /wp
 EXPOSE 8080
 ENTRYPOINT ["/wp"]
+LABEL org.opencontainers.image.source https://github.com/clarkbains/waypoint-proxy
