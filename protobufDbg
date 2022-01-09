@@ -1,0 +1,2 @@
+ssh cwdc-nc-1 "sudo tcpdump -s 0 -i vethafaf491 -w /proc/self/fd/1" > /tmp/tcpdump.pcap
+sudo wireshark -k -i /tmp/myfifo
