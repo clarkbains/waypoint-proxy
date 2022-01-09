@@ -1,23 +1,22 @@
 # syntax=docker/dockerfile:1
+LABEL org.opencontainers.image.source https://github.com/clarkbains/waypoint-proxy
 FROM golang:1.16-alpine AS build
 WORKDIR /app
-COPY root.pem ./
 COPY go.mod ./
 COPY go.sum ./
-RUN go mod download
+RUN go mod download -x
 COPY ./proto ./proto
 COPY ./routers ./routers
 COPY *.go ./
-RUN RUN go build -o /app
-CMD ["/app"]
+RUN go build -o /wp
+CMD ["/wp"]
 
 ##
 ## Deploy
 ##
-FROM gcr.io/distroless/base-debian10
+FROM alpine:latest
 WORKDIR /
 COPY root.pem ./
-COPY --from=build /app /app
+COPY --from=build /wp /wp
 EXPOSE 8080
-USER nonroot:nonroot
-ENTRYPOINT ["/app"]
+ENTRYPOINT ["/wp"]
