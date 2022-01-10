@@ -4,7 +4,6 @@ import (
 	b64 "encoding/base64"
 	"encoding/json"
 	"fmt"
-	"net/http/httputil"
 	"sync"
 
 	"github.com/clarkbains/waypoint-proxy/routers"
