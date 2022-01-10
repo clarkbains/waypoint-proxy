@@ -4,6 +4,7 @@ import (
 	b64 "encoding/base64"
 	"encoding/json"
 	"fmt"
+	"net/http/httputil"
 	"sync"
 
 	"github.com/clarkbains/waypoint-proxy/routers"
@@ -35,7 +36,10 @@ func Start(wg *sync.WaitGroup, port int){
 	wg.Add(port)
 	defer wg.Done()
 	ur := routers.NewRouter()
-	
+	ur.GET("/dump", func(c *gin.Context) {
+		b,_ := httputil.DumpRequest(c.Request, true)
+		c.String(200, string(b))
+	})
 	ur.GET("/self", func(c *gin.Context) {
 		data := getUser(c.GetHeader("x-cwdc-user"))
 		c.String(200, "id: %s, username: %s#%d", data.Id, data.UserName, data.Discriminator)
