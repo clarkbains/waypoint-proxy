@@ -3,6 +3,7 @@ package userrouter
 import (
 	"fmt"
 	"sync"
+	"net/http/httputil"
 	"github.com/clarkbains/waypoint-proxy/routers"
 	"github.com/gin-gonic/gin"
 )
@@ -14,8 +15,10 @@ func Start(wg *sync.WaitGroup, port int){
 	defer wg.Done()
 	ur := routers.NewRouter()
 	
-	ur.GET("/headers", func(c *gin.Context) {
-		c.JSON(200, gin.H{"cwdc-info": c.Request.Header["x-cwdc-login-info"]})
+	ur.GET("/dump", func(c *gin.Context) {
+		requestDump, _ := httputil.DumpRequest(c.Request, true)
+
+		c.JSON(200, string(requestDump))
 		})
 	ur.Run(fmt.Sprintf(":%d", port))
 }
