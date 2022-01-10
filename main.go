@@ -6,7 +6,6 @@ import (
 	"sync"
 	pb "github.com/clarkbains/waypoint-proxy/proto"
 	"github.com/clarkbains/waypoint-proxy/routers/userRouter"
-	"github.com/gin-gonic/gin"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -14,15 +13,6 @@ func main() {
 	var wg sync.WaitGroup
 	
 	go userrouter.Start(&wg, 2000)
-	
-
-	
-
-	adminRouter:= gin.Default()
-	adminRouter.SetTrustedProxies([]string{"192.168.0.0/16"})
-
-	webHooks:= gin.Default()
-	webHooks.SetTrustedProxies([]string{"192.168.0.0/16"})
 
 	c := GetGrpcClient()
 
